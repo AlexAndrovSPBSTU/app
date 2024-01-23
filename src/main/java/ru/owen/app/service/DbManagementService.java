@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class DbManagementService {
@@ -53,8 +54,8 @@ public class DbManagementService {
         this.kippriborMeyrtecCategoryRepository = kippriborMeyrtecCategoryRepository;
     }
 
-    public void reloadOwenProducts(String srcUrl) throws IOException {
-        Categories categories = objectMapper.readValue(new URL(srcUrl).openStream(),
+    private void reloadOwenProducts() throws IOException {
+        Categories categories = objectMapper.readValue(new URL(ProjectConstants.OWEN_SRC_URL).openStream(),
                 Categories.class);
         List<OwenCategory> newCategories = new ArrayList<>(categories.getCategories());
         List<Product> newProducts = new ArrayList<>();
@@ -64,10 +65,12 @@ public class DbManagementService {
         List<DocItem> newDocItems = new ArrayList<>();
 
         for (OwenCategory owenCategory : categories.getCategories()) {
+            newCategories.addAll(owenCategory.getItems());
             for (OwenCategory subOwenCategory : owenCategory.getItems()) {
                 subOwenCategory.setProducts(new HashSet<>(subOwenCategory.getProducts()).stream().toList());
                 newProducts.addAll(subOwenCategory.getProducts());
                 for (Product product : subOwenCategory.getProducts()) {
+                    product.setPrices(new HashSet<>(product.getOwenPrices()).stream().toList());
                     newOwenPrices.addAll(product.getOwenPrices());
                     newDocs.addAll(product.getDocs());
                     newImages.addAll(product.getImages());
@@ -75,75 +78,83 @@ public class DbManagementService {
                             .map(Doc::getItems)
                             .flatMap(Collection::stream)
                             .toList());
-                    product.setPrices(new HashSet<>(product.getOwenPrices()).stream().toList());
                 }
             }
         }
-        newCategories.stream().map(OwenCategory::getItems).flatMap(Collection::stream).forEach(subC -> subC.setProducts(null));
+        newCategories.forEach(category -> {
+            category.setProducts(null);
+            category.setItems(null);
+        });
 
         reloadCollection(newCategories, owenCategoryRepository);
         logger.info("OwenCategories have been saved");
+
         reloadCollection(newProducts, productRepository);
         logger.info("OwenProducts have been saved");
+
         reloadCollection(newOwenPrices, owenPriceRepository);
         logger.info("OwenPrices have been saved");
+
         reloadCollection(newImages, imageRepository);
         logger.info("OwenImages have been saved");
+
         reloadCollection(newDocs, docRepository);
         logger.info("OwenDocs have been saved");
+
         reloadCollection(newDocItems, docItemRepository);
         logger.info("OwenDocItems have been saved");
     }
 
-    public <T> void reloadCollection(List<T> newObjects, JpaRepository<T, ?> jpaRepository) {
+    private <T> void reloadCollection(List<T> newObjects, JpaRepository<T, ?> jpaRepository) {
         List<T> oldObjects = jpaRepository.findAll();
         Set<T> newObjectsSet = new HashSet<>(newObjects);
         List<T> forDelete = oldObjects.stream().filter(obj -> !newObjectsSet.contains(obj)).toList();
         jpaRepository.deleteAll(forDelete);
         jpaRepository.saveAll(newObjectsSet);
+        System.out.println("For delete - " + forDelete.size());
     }
 
-    public void saveModifications() {
-        List<Modification> freshModifications = csvToProductListParser.getProducts();
-        int newProductsHash = freshModifications.hashCode();
-
-        List<Modification> oldModifications = modificationRepository.findAll();
-        int oldProductsHash = oldModifications.hashCode();
-
-        List<Modification> forDelete = new ArrayList<>();
-        for (Modification modification : oldModifications) {
-            if (freshModifications.stream()
-                    .noneMatch(updatedEntity -> Objects.equals(updatedEntity.getPartNumber(), modification.getPartNumber()))) {
-                forDelete.add(modification);
-            }
-        }
-        modificationRepository.deleteAll(forDelete);
-        List<Modification> clearList = freshModifications.stream().filter(p -> p.getPartNumber() != null).toList();
-        modificationRepository.saveAll(clearList);
+    private void reloadModifications() {
+        reloadCollection(csvToProductListParser.getProducts()
+                        .stream()
+                        .filter(modification -> modification.getPartNumber() != null)
+                        .collect(Collectors.toList()),
+                modificationRepository);
     }
 
-    public void reloadKippriborAndMeyrtecProducts(String kippriborSrcUrl, String meyrtecSrcUrl) throws IOException {
-        KippriborPricesAndCategories kippriborPricesAndCategories = objectMapper.readValue(new URL(kippriborSrcUrl).openStream(),
+    private void reloadKippriborAndMeyrtecProducts() throws IOException {
+        KippriborPricesAndCategories kippriborPricesAndCategories = objectMapper.readValue(new URL(ProjectConstants.KIPPRIBOR_SRC_URL).openStream(),
                 KippriborPricesAndCategories.class);
+
         List<KippriborMeyrtecCategory> kipCategories = kippriborPricesAndCategories.getCategories();
-        for (KippriborMeyrtecCategory owenCategory : kipCategories) {
-            owenCategory.setId(ProjectConstants.KIPPRIBOR_PREFIX + owenCategory.getId());
+        for (KippriborMeyrtecCategory kippriborMeyrtecCategory : kipCategories) {
+            kippriborMeyrtecCategory.setId(ProjectConstants.KIPPRIBOR_PREFIX + kippriborMeyrtecCategory.getId());
         }
 
-        MeyrtecPricesAndCategories meyrtecPricesAndCategories = objectMapper.readValue(new URL(meyrtecSrcUrl).openStream(),
+        MeyrtecPricesAndCategories meyrtecPricesAndCategories = objectMapper.readValue(new URL(ProjectConstants.MEYERTEC_SRC_URL).openStream(),
                 MeyrtecPricesAndCategories.class);
         List<KippriborMeyrtecCategory> meyrtecCategories = meyrtecPricesAndCategories.getCategories();
 
-        for (KippriborMeyrtecCategory owenCategory : meyrtecCategories) {
-            owenCategory.setId(ProjectConstants.MEYRTEC_PREFIX + owenCategory.getId());
+        for (KippriborMeyrtecCategory kippriborMeyrtecCategory : meyrtecCategories) {
+            kippriborMeyrtecCategory.setId(ProjectConstants.MEYRTEC_PREFIX + kippriborMeyrtecCategory.getId());
         }
-        meyrtecCategories.addAll(kipCategories);
 
-        reloadCollection(meyrtecCategories, kippriborMeyrtecCategoryRepository);
-        List<CommonPrice> commonPrices = new ArrayList<>();
-        commonPrices.addAll(kippriborPricesAndCategories.getProducts());
-        commonPrices.addAll(meyrtecPricesAndCategories.getProducts());
-        reloadCollection(commonPrices, kippriborMeyertecPriceRepository);
+        List<KippriborMeyrtecCategory> allCategories = new ArrayList<>();
+        allCategories.addAll(kipCategories);
+        allCategories.addAll(meyrtecCategories);
+        reloadCollection(allCategories, kippriborMeyrtecCategoryRepository);
+        logger.info("KippriborMeyrtecCategories have been saved");
+
+        List<CommonPrice> allPrices = new ArrayList<>();
+        allPrices.addAll(kippriborPricesAndCategories.getProducts());
+        allPrices.addAll(meyrtecPricesAndCategories.getProducts());
+        reloadCollection(allPrices, kippriborMeyertecPriceRepository);
+        logger.info("KippriborMeyrtecPrices have been saved");
+
+        List<Arrival> allArrivals = new ArrayList<>(allPrices.stream().map(CommonPrice::getArrivals).flatMap(Collection::stream).toList());
+        reloadCollection(allArrivals, arrivalRepository);
+        logger.info("Arrivals have been saved");
+
     }
 
     public void clearDB() {
@@ -160,35 +171,33 @@ public class DbManagementService {
     }
 
     private void linkPricesAndModifications() {
-        List<OwenPrice> owenPrices = owenPriceRepository.findALlByModificationIsNull();
-        List<CommonPrice> kippriborMeyertecPrices = kippriborMeyertecPriceRepository.findALlByModificationIsNull();
+        List<OwenPrice> owenPrices = owenPriceRepository.findAllByModificationIsNull();
+        List<CommonPrice> kippriborMeyertecPrices = kippriborMeyertecPriceRepository.findAllByModificationIsNull();
         Set<Modification> modifications = new HashSet<>(modificationRepository.findAll());
 
         owenPrices
                 .forEach(price -> {
-                    Modification modification = new Modification();
-                    modification.setPartNumber(price.getIzd_code());
+                    Modification modification = Modification.builder().partNumber(price.getIzd_code()).build();
+                    price.setModification(
+                            (modifications.contains(modification) ? modification : null));
+                });
+        kippriborMeyertecPrices
+                .forEach(price -> {
+                    Modification modification = Modification.builder().partNumber(price.getId()).build();
                     price.setModification(
                             (modifications.contains(modification) ? modification : null));
                 });
 
-        kippriborMeyertecPrices
-                .forEach(price -> {
-                    Modification modification = new Modification();
-                    modification.setPartNumber(price.getId());
-                    price.setModification(
-                            (modifications.contains(modification) ? modification : null));
-                });
         owenPriceRepository.saveAll(owenPrices);
         kippriborMeyertecPriceRepository.saveAll(kippriborMeyertecPrices);
     }
 
     public void reloadDB() throws IOException {
-        reloadOwenProducts(ProjectConstants.OWEN_SRC_URL);
+        reloadOwenProducts();
         logger.info("Owen products have been saved");
-        reloadKippriborAndMeyrtecProducts(ProjectConstants.KIPPRIBOR_SRC_URL, ProjectConstants.MEYERTEC_SRC_URL);
+        reloadKippriborAndMeyrtecProducts();
         logger.info("Meyrtec and Kippribor products have been saved");
-        saveModifications();
+        reloadModifications();
         logger.info("Modifications have been saved");
         linkPricesAndModifications();
         logger.info("Prices and modifications have been linked");

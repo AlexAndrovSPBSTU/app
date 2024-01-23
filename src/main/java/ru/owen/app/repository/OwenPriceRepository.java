@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface OwenPriceRepository extends JpaRepository<OwenPrice, PriceId> {
-    List<OwenPrice> findALlByModificationIsNull();
+    List<OwenPrice> findAllByModificationIsNull();
 }

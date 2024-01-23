@@ -21,21 +21,7 @@ public class ProductDTO {
     private String thumb;
     private String description;
     private String specs;
-    private OwenCategory owenCategory;
     private List<Image> images;
     private List<OwenPrice> owenPrices;
     private List<Doc> docs;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductDTO product = (ProductDTO) o;
-        return Objects.equals(id, product.id) && Objects.equals(owenCategory, product.owenCategory);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, owenCategory);
-    }
 }

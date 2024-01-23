@@ -28,7 +28,7 @@ public class OwenCategory {
     @Setter
     private String link;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_id", referencedColumnName = "category_id")
     @JsonBackReference
     @Setter
@@ -37,7 +37,7 @@ public class OwenCategory {
     @OneToMany(mappedBy = "owenCategory")
     private List<Product> products;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent")
     private List<OwenCategory> items;
 
 

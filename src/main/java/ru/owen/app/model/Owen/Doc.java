@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Entity
@@ -42,6 +43,23 @@ public class Doc {
         if (this.items != null) {
             this.items.forEach(i -> i.setDoc(this));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Doc doc = (Doc) o;
+        return Objects.equals(name, doc.name) && Objects.equals(product, doc.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, product);
     }
 }
 

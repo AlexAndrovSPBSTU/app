@@ -1,12 +1,29 @@
-create table arrival
+create table owencategory
 (
-    quantity integer not null,
-    date     date    not null,
-    price_id text    not null
-        references kippribormeyrtecprice
-            on delete cascade,
-    primary key (quantity, date, price_id)
+    category_id text not null
+        constraint category_pkey
+            primary key,
+    name        text,
+    link        text,
+    parent_id   text
 );
+
+create table product
+(
+    product_id  text not null,
+    link        text,
+    sku         text,
+    name        text,
+    image       text,
+    thumb       text,
+    description text,
+    specs       text,
+    category_id text not null
+        references owencategory
+            on delete cascade,
+    primary key (product_id, category_id)
+);
+
 
 create table doc
 (
@@ -50,6 +67,29 @@ create table kippribormeyrteccategory
     parent_id   text
 );
 
+
+create table modification
+(
+    part_number      text not null
+        primary key,
+    working_title    text,
+    modification     text,
+    full_title       text,
+    price            double precision,
+    price_nds        double precision,
+    product_serial   text,
+    group_           text,
+    delivery_time    text,
+    size             integer,
+    oversize         integer,
+    multiplicity     integer,
+    code_tnved       text,
+    status           text,
+    guarantee_period smallint,
+    market_exit_date varchar(30)
+);
+
+
 create table kippribormeyrtecprice
 (
     id             text not null
@@ -76,37 +116,6 @@ create table kippribormeyrtecprice
     price_type     integer
 );
 
-create table modification
-(
-    part_number      text not null
-        primary key,
-    working_title    text,
-    modification     text,
-    full_title       text,
-    price            double precision,
-    price_nds        double precision,
-    product_serial   text,
-    group_           text,
-    delivery_time    text,
-    size             integer,
-    oversize         integer,
-    multiplicity     integer,
-    code_tnved       text,
-    status           text,
-    guarantee_period smallint,
-    market_exit_date varchar(30)
-);
-
-create table owencategory
-(
-    category_id text not null
-        constraint category_pkey
-            primary key,
-    name        text,
-    link        text,
-    parent_id   text
-);
-
 create table owenprice
 (
     izd_code     text not null,
@@ -125,18 +134,12 @@ create table owenprice
             on delete cascade
 );
 
-create table product
+create table arrival
 (
-    product_id  text not null,
-    link        text,
-    sku         text,
-    name        text,
-    image       text,
-    thumb       text,
-    description text,
-    specs       text,
-    category_id text not null
-        references owencategory
+    quantity integer not null,
+    date     date    not null,
+    price_id text    not null
+        references kippribormeyrtecprice
             on delete cascade,
-    primary key (product_id, category_id)
+    primary key (quantity, date, price_id)
 );

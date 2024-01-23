@@ -17,214 +17,88 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"owenPrices", "kippriborMeyertecPrices"})
+@Getter
+@Setter
 public class Modification {
     @Id
     @Column(name = "part_number")
+    //sku
     private String partNumber;
 
     @Column(name = "working_title")
+    //Наименование рабочее
     private String workingTitle;
 
     @Column(name = "modification")
     private String modification;
 
     @Column(name = "full_title")
+    //Наименование полное
     private String fullTitle;
 
     @Column(name = "price")
+    //Цена
     private Double price_;
 
     @Column(name = "price_NDS")
+    //Цена с ндс
     private Double priceNDS;
 
     @Column(name = "product_serial")
+    //Серийность товара
     private String productSerial;
 
     @Column(name = "group_")
+    //Группа товара
     private String group;
 
     @Column(name = "delivery_time")
+    //Срок поставки
     private String deliveryTime;
 
     @Column(name = "size")
+    //Крупность
     private Integer size;
 
     @Column(name = "oversize")
+    //Гиперкрупность
     private Integer oversize;
 
     @Column(name = "multiplicity")
+    //Кратность
     private Integer multiplicity;
 
     @Column(name = "code_TNVED")
     private String codeTNVED;
 
     @Column(name = "status")
+    //Статус товара
     private String status;
 
     @Column(name = "guarantee_period")
+    //Гарантийный срок
     private Short guaranteePeriod;
 
     @Column(name = "market_exit_date")
+    //Дата вывода с рынка
     private String MarketExitDate;
 
     @OneToMany(mappedBy = "modification")
     @JsonManagedReference("modification-owenprices")
-//    @JsonIgnore
     private List<OwenPrice> owenPrices;
 
     @OneToMany(mappedBy = "modification")
-//    @JsonManagedReference("modification-prices")
     @JsonIgnore
     private List<CommonPrice> kippriborMeyertecPrices;
 
-    public String getPartNumber() {
-        return partNumber;
-    }
-
-    public void setPartNumber(String partNumber) {
-        this.partNumber = partNumber;
-    }
-
-    public String getWorkingTitle() {
-        return workingTitle;
-    }
-
-    public void setWorkingTitle(String workingTitle) {
-        this.workingTitle = workingTitle;
-    }
-
-    public String getModification() {
-        return modification;
-    }
-
-    public void setModification(String modification) {
-        this.modification = modification;
-    }
-
-    public String getFullTitle() {
-        return fullTitle;
-    }
-
-    public void setFullTitle(String fullTitle) {
-        this.fullTitle = fullTitle;
-    }
-
-    public Double getPrice_() {
-        return price_;
-    }
-
-    public void setPrice_(Double price_) {
-        this.price_ = price_;
-    }
-
-    public Double getPriceNDS() {
-        return priceNDS;
-    }
-
-    public void setPriceNDS(Double priceNDS) {
-        this.priceNDS = priceNDS;
-    }
-
-    public String getProductSerial() {
-        return productSerial;
-    }
-
-    public void setProductSerial(String productSerial) {
-        this.productSerial = productSerial;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    public String getDeliveryTime() {
-        return deliveryTime;
-    }
-
-    public void setDeliveryTime(String deliveryTime) {
-        this.deliveryTime = deliveryTime;
-    }
-
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
-    }
-
-    public Integer getOversize() {
-        return oversize;
-    }
-
-    public void setOversize(Integer oversize) {
-        this.oversize = oversize;
-    }
-
-    public Integer getMultiplicity() {
-        return multiplicity;
-    }
-
-    public void setMultiplicity(Integer multiplicity) {
-        this.multiplicity = multiplicity;
-    }
-
-    public String getCodeTNVED() {
-        return codeTNVED;
-    }
-
-    public void setCodeTNVED(String codeTNVED) {
-        this.codeTNVED = codeTNVED;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Short getGuaranteePeriod() {
-        return guaranteePeriod;
-    }
-
-    public void setGuaranteePeriod(Short guaranteePeriod) {
-        this.guaranteePeriod = guaranteePeriod;
-    }
-
-    public String getMarketExitDate() {
-        return MarketExitDate;
-    }
-
-    public void setMarketExitDate(String marketExitDate) {
-        MarketExitDate = marketExitDate;
-    }
-
-    public List<OwenPrice> getOwenPrices() {
-        return owenPrices;
-    }
-
-    public void setOwenPrices(List<OwenPrice> owenPrices) {
-        this.owenPrices = owenPrices;
-    }
-
-    public List<CommonPrice> getKippriborMeyertecPrices() {
-        return kippriborMeyertecPrices;
-    }
-
-    public void setKippriborMeyertecPrices(List<CommonPrice> kippriborMeyertecPrices) {
-        this.kippriborMeyertecPrices = kippriborMeyertecPrices;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Modification that = (Modification) o;
         return Objects.equals(partNumber, that.partNumber);
     }
@@ -232,5 +106,9 @@ public class Modification {
     @Override
     public int hashCode() {
         return Objects.hash(partNumber);
+    }
+
+    public String toOrderItem(int num, int amount) {
+        return "[" + num + "~" + fullTitle + "~" + amount + "~" + priceNDS + "~" + priceNDS * amount + "~" + deliveryTime + "]";
     }
 }

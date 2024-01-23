@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.owen.app.model.Owen.Product;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "image")
 @Setter
@@ -29,4 +31,21 @@ public class Image {
     })
     @JsonBackReference("product-images")
     private Product product;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Image image = (Image) o;
+        return Objects.equals(src, image.src) && Objects.equals(alt, image.alt) && Objects.equals(product, image.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(src, alt, product);
+    }
 }

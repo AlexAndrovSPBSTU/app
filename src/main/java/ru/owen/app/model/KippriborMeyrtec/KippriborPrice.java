@@ -11,4 +11,6 @@ public class KippriborPrice extends CommonPrice {
     public void setCategory(KippriborMeyrtecCategory owenCategoryId) {
         super.category = KippriborMeyrtecCategory.builder().id(ProjectConstants.KIPPRIBOR_PREFIX + owenCategoryId.getId()).build();
     }
+
+
 }

@@ -8,6 +8,7 @@ import lombok.*;
 import ru.owen.app.model.Modification;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Table(name = "kippribormeyrtecprice")
@@ -57,5 +58,25 @@ public class CommonPrice {
         if (this.arrivals != null) {
             this.arrivals.forEach(a -> a.setPrice(this));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CommonPrice that = (CommonPrice) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "CommonPrice{" +
+                "id='" + id + '\'' +
+                '}';
     }
 }

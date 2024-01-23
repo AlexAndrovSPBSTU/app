@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface KippriborMeretecPriceRepository extends JpaRepository<CommonPrice, String> {
-    List<CommonPrice> findALlByModificationIsNull();
+    List<CommonPrice> findAllByModificationIsNull();
 }

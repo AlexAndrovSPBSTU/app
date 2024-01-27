@@ -6,9 +6,10 @@ import java.io.IOException;
 
 @Component
 public class Dart {
+
     public static void main(String[] args) {
-//        createPriceList("", "", "", "");
-//        createInvoice("", "", "", "", "", "", "", "");
+//        createPriceList("fileName", "20", "100", "[[1,2,3,4,5,6]]");
+//        createInvoice("", "", "", "", "", "", "");
     }
 
     public void createInvoice(String invoiceName, String companyData, String deliveryAddressValue, String deliveryPriceValue,
@@ -30,7 +31,7 @@ public class Dart {
 //            deliveryAddressValue = "Самовывоз г.Москва 1я ул.Энтузиастов д.4";
 
             String deliveryPriceArg = "--deliveryPrice";
-//            deliveryPriceValue = "0,00";
+//            String deliveryPriceValue = "0,00";
 
             String itogoArg = "--itogo";
 //            itogoValue = "5 000,00";
@@ -40,7 +41,7 @@ public class Dart {
 
             String couponArg = "--coupon";
 //            couponValue = "-1%";
-
+            couponValue = "-" + couponValue + "%";
 
             //[Num of a product in the list,fullTitle of modification,amount of a product,price,sum,delivery time]
             String tovaryListArg = "--tovaryList";
@@ -106,7 +107,7 @@ public class Dart {
 //            ndsValue = "365,00";
 
             String tovaryListArg = "--tovaryList";
-            //[Num of a product in the list,fullTitle of modification,amount of a product,price,sum,delivery time]
+//          [Num of a product in the list,fullTitle of modification,amount of a product,price,sum,delivery time]
 //            tovaryListValue = "[[Позиция1,Позиция2,Позиция3,Позиция4,Позиция5,Позиция6]," +
 //                    "[Позиция1,Позиция2,Позиция3,Позиция4,Позиция5,Позиция6]," +
 //                    "[Позиция1,Позиция2,Позиция3,Позиция4,Позиция5,Позиция6]]";

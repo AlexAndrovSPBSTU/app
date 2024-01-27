@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.owen.app.model.Customer;
+import ru.owen.app.model.Delivery;
 import ru.owen.app.model.Modification;
 import ru.owen.app.model.cart.CartItem;
 import ru.owen.app.model.cart.CartItemId;
@@ -92,30 +93,30 @@ public class ShopService {
     }
 
     public void createPriceList() {
-        Double itogo = 0.0;
-        Double nds = 0.0;
+        double[] itogo = {0.0};
+        double[] nds = {0.0};
         StringBuilder productList = new StringBuilder();
         collectProducts(itogo, nds, productList);
-        dart.createPriceList("priceList", String.valueOf(itogo), String.valueOf(nds), productList.toString());
+        dart.createPriceList("priceList", String.valueOf(itogo[0]), String.valueOf(nds[0]), productList.toString());
     }
 
-    public void createInvoice(String companyData, String deliveryAddressValue, String deliveryPriceValue, String couponValue) {
-        Double itogo = 0.0;
-        Double nds = 0.0;
+    public void createInvoice(String companyData, Delivery delivery, byte couponValue) {
+        double[] itogo = {0.0};
+        double[] nds = {0.0};
         StringBuilder productList = new StringBuilder();
         collectProducts(itogo, nds, productList);
-        dart.createInvoice("invoice", companyData, deliveryAddressValue, deliveryPriceValue,
-                String.valueOf(itogo), String.valueOf(nds), couponValue, productList.toString());
+        dart.createInvoice("invoice", companyData, delivery.getFullAddress(), String.valueOf(delivery.getDeliveryPrice()),
+                String.valueOf(itogo[0]), String.valueOf(nds[0]), String.valueOf(couponValue), productList.toString());
     }
 
-    private void collectProducts(Double itogo, Double nds, StringBuilder productList) {
+    private void collectProducts(double[] itogo, double[] nds, StringBuilder productList) {
         List<CartItem> cartItems = cartItemRepository.findAllByCustomer(getCustomer());
         productList.append("[");
         int num = 1;
         for (CartItem cartItem : cartItems) {
-            nds += (cartItem.getModification().getPriceNDS() - cartItem.getModification().getPrice_()) * cartItem.getTotalCount();
-            itogo += cartItem.getModification().getPriceNDS();
-            productList.append(cartItem.getModification().toOrderItem(num++, cartItem.getTotalCount())).append(",");
+            nds[0] += (cartItem.getModification().getPriceNDS() - cartItem.getModification().getPrice_()) * cartItem.getTotalCount();
+            itogo[0] += cartItem.getModification().getPriceNDS();
+            productList.append(cartItem.getModification().toOrderItem(num++, cartItem.getTotalCount())).append("~");
         }
         productList.deleteCharAt(productList.length() - 1);
         productList.append("]");

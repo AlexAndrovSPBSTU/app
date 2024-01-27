@@ -84,7 +84,6 @@ public class Modification {
     private String MarketExitDate;
 
     @OneToMany(mappedBy = "modification")
-    @JsonManagedReference("modification-owenprices")
     private List<OwenPrice> owenPrices;
 
     @OneToMany(mappedBy = "modification")

@@ -26,6 +26,7 @@ public interface ProjectConstants {
     String SUBJECT = "JWT Token";
     final Map<String, CustomerDTO> verifiers = new HashMap<>();
 
+
     String[][] WHITE_LIST = {
             {
                     "^/verify$",
@@ -50,6 +51,5 @@ public interface ProjectConstants {
     String[] ADMIN_LIST = {
             "/database/clear",
             "/database/reload",
-
     };
 }

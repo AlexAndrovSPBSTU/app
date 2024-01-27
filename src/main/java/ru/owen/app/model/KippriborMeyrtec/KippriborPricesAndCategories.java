@@ -6,8 +6,8 @@ import lombok.Setter;
 import java.util.List;
 
 @Setter
+@Getter
 public class KippriborPricesAndCategories {
-    @Getter
     private List<KippriborMeyrtecCategory> categories;
     private List<KippriborPrice> products;
 

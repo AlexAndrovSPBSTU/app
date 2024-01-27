@@ -14,10 +14,13 @@ public class InvoiceRequest {
     @JsonProperty(value = "KPP")
     private String KPP;
     private String deliveryAddress;
-    private String deliveryPrice;
-    private String coupon;
+    private byte coupon;
+    private Delivery delivery;
 
     public String getCompanyData() {
         return name + ", " + INN + ", " + KPP + ", " + address;
     }
 }
+
+
+

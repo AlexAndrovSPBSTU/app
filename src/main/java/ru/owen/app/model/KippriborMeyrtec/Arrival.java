@@ -28,7 +28,6 @@ public class Arrival {
     @Id
     @ManyToOne
     @JoinColumn(name = "price_id", referencedColumnName = "id")
-    @JsonBackReference("price-arrivals")
     private CommonPrice price;
 
     @Override

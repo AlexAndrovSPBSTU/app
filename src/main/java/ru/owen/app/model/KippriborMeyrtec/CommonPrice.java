@@ -40,16 +40,13 @@ public class CommonPrice {
 
     @ManyToOne
     @JoinColumn(name = "modification", referencedColumnName = "part_number")
-    @JsonBackReference("modification-prices")
     private Modification modification;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
-    @JsonBackReference("category-prices")
     protected KippriborMeyrtecCategory category;
 
     @OneToMany(mappedBy = "price", cascade = CascadeType.ALL)
-    @JsonManagedReference("price-arrivals")
     private List<Arrival> arrivals;
 
     @JsonSetter

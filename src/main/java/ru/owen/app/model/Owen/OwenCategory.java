@@ -30,7 +30,6 @@ public class OwenCategory {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_id", referencedColumnName = "category_id")
-    @JsonBackReference
     @Setter
     private OwenCategory parent;
 

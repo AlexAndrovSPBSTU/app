@@ -46,12 +46,10 @@ public class Product {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     @Id
-    @JsonBackReference
     @Setter
     private OwenCategory owenCategory;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonManagedReference("product-images")
     private List<Image> images;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -59,7 +57,6 @@ public class Product {
     private List<OwenPrice> owenPrices;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonManagedReference("product-docs")
     private List<Doc> docs;
 
 

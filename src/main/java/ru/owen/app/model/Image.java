@@ -29,7 +29,6 @@ public class Image {
             @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
             @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     })
-    @JsonBackReference("product-images")
     private Product product;
 
     @Override

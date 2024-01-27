@@ -25,7 +25,6 @@ public class DocItem {
 
     @ManyToOne
     @JoinColumn(name = "doc_id", referencedColumnName = "doc_id")
-    @JsonBackReference("doc-doc_items")
     private Doc doc;
 
     @Override

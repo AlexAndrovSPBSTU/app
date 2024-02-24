@@ -11,7 +11,7 @@ public class KippriborPricesAndCategories {
     private List<KippriborMeyrtecCategory> categories;
     private List<KippriborPrice> products;
 
-    public List<? extends CommonPrice> getProducts() {
+    public List<? extends KippriborMeyrtecPrice> getProducts() {
         return products;
     }
 }

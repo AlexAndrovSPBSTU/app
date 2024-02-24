@@ -1,4 +1,4 @@
-package ru.owen.app.model.cart;
+package ru.owen.app.model.Cart;
 
 import jakarta.persistence.*;
 import lombok.*;

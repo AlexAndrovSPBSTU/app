@@ -22,9 +22,15 @@ public class DbManagementController {
     @GetMapping("/clear")
     public ResponseEntity<?> clearDB() {
         dbManagementService.clearDB();
-        return ResponseEntity.ok("DB has benn cleared");
+        return ResponseEntity.ok("DB has been cleared");
     }
 
+    //TODO
+    /*
+    * Some classes are being downloaded as not expected.
+    *
+    *
+    * */
     @GetMapping("/reload")
     public ResponseEntity<?> reloadDB() throws IOException {
         dbManagementService.reloadDB();

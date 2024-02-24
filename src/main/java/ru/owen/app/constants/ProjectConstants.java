@@ -14,7 +14,7 @@ public interface ProjectConstants {
     String MEYERTEC_SRC_URL = "https://meyertec.owen.ru/export/catalog.json?host=owen-russia.ru&key=xXeIXcL53NYtEklXxf0VBRDmU4V5ljrb";
     String KIPPRIBOR_PREFIX = "kippribor_";
     String MEYRTEC_PREFIX = "meyrtec_";
-    String OWEN_MODIFICATIONS_SRC = "https://owen-russia.ru/wp-content/uploads/wpallimport/files/price_dealer.csv";
+    String OWEN_MODIFICATIONS_SRC = "https://owen-russia.ru/wp-content/uploads/wpallimport/files/price_dealer.xls";
     String JWT_KEY = "CU11iT9!dkKnxI6-sKWoOeMzpEoRHbV!sRo=/j0V/KkFVCQa1fZnnT0h7i8K2iwaEOlHU4c9HicA4fny3CQFX0nx3IFPghpCSrW=!8VhsiExIHsQm1teXVNdFdXA4!/0";
     SecretKey KEY = Keys.hmacShaKeyFor(JWT_KEY.getBytes(StandardCharsets.UTF_8));
     int ONE_DAY = 3600_000 * 24;

@@ -1,6 +1,7 @@
 package ru.owen.app.model.Owen;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class DocItem {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private int id;
 
     @Column(name = "name")
@@ -25,6 +27,7 @@ public class DocItem {
 
     @ManyToOne
     @JoinColumn(name = "doc_id", referencedColumnName = "doc_id")
+    @JsonBackReference
     private Doc doc;
 
     @Override

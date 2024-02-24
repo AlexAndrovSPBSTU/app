@@ -12,7 +12,7 @@ public class MeyrtecPricesAndCategories {
     private List<KippriborMeyrtecCategory> categories;
     private List<MeyertecPrice> products;
 
-    public List<? extends CommonPrice> getProducts() {
+    public List<? extends KippriborMeyrtecPrice> getProducts() {
         return products;
     }
 }

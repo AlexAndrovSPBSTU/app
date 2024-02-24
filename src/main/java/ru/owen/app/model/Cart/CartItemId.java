@@ -1,4 +1,4 @@
-package ru.owen.app.model.cart;
+package ru.owen.app.model.Cart;
 
 import lombok.*;
 import ru.owen.app.model.Customer;

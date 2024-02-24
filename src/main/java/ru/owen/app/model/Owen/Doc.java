@@ -1,7 +1,7 @@
 package ru.owen.app.model.Owen;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,6 +18,7 @@ public class Doc {
     @Id
     @Column(name = "doc_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private int id;
 
     @Column(name = "name")
@@ -28,9 +29,10 @@ public class Doc {
             @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
             @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     })
-    private Product product;
+    @JsonBackReference
+    private OwenProduct owenProduct;
 
-    @OneToMany(mappedBy = "doc", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doc")
     private List<DocItem> items;
 
     @JsonSetter
@@ -50,12 +52,12 @@ public class Doc {
             return false;
         }
         Doc doc = (Doc) o;
-        return Objects.equals(name, doc.name) && Objects.equals(product, doc.product);
+        return Objects.equals(name, doc.name) && Objects.equals(owenProduct, doc.owenProduct);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, product);
+        return Objects.hash(name, owenProduct);
     }
 }
 

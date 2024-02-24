@@ -1,18 +1,23 @@
 package ru.owen.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.owen.app.model.Delivery;
 import ru.owen.app.model.InvoiceRequest;
-import ru.owen.app.model.cart.CartResponse;
-import ru.owen.app.model.CompanyData;
+import ru.owen.app.model.Cart.CartResponse;
 import ru.owen.app.service.ShopService;
 
+import java.io.File;
 import java.util.List;
 
 @RestController
 public class ShopController {
+
     private final ShopService shopService;
 
     @Autowired
@@ -43,8 +48,13 @@ public class ShopController {
         return ResponseEntity.ok("Product has been deleted from the cart");
     }
 
+    @GetMapping("/invoices")
+    public ResponseEntity<?> getInvoices() {
+        return ResponseEntity.ok(shopService.getInvoices());
+    }
 
-//1 -    "Самовывоз - Москва, 1-ая ул. Энтузиастов 4, оф. 4"
+
+    //1 -    "Самовывоз - Москва, 1-ая ул. Энтузиастов 4, оф. 4"
 //2 -    "Самовывоз - Псков, улица Советская , дом 49, офис 1010"
 //3 -    "Самовывоз - Санкт-Петербург, проспект Стачек 37, оф. 108"
 //4 -    (оплата при получении) + address
@@ -55,14 +65,42 @@ public class ShopController {
         if (invoiceRequest.getDeliveryAddress() != null) {
             delivery.setDeliveryAddress(invoiceRequest.getDeliveryAddress());
         }
-        shopService.createInvoice(invoiceRequest.getCompanyData(), delivery ,
+        String filePath = shopService.createInvoice(invoiceRequest.getCompanyData(), delivery,
                 invoiceRequest.getCoupon());
-        return ResponseEntity.ok("Invoice has been created");
+
+        File pdfFile = new File(filePath);
+
+        if (!pdfFile.exists()) {
+            // Обработайте ситуацию, если файл не найден
+            return ResponseEntity.notFound().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "document.pdf");
+
+        // Создайте ресурс из файла
+        Resource resource = new FileSystemResource(pdfFile);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(resource);
+
     }
 
     @PostMapping("/price-list")
     public ResponseEntity<?> createPriceLists() {
-        shopService.createPriceList();
-        return ResponseEntity.ok("Price list has been created");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "document.pdf");
+        String filePath = shopService.createPriceList();
+        File priceList = new File(filePath);
+        // Создайте ресурс из файла
+        Resource resource = new FileSystemResource(priceList);
+
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(resource);
     }
 }

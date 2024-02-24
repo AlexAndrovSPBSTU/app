@@ -1,6 +1,6 @@
 package ru.owen.app.model.Owen;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,8 +32,8 @@ public class OwenPrice {
             @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     })
     @Id
-    @JsonIgnore
-    private Product product;
+    @JsonBackReference
+    private OwenProduct owenProduct;
 
     @ManyToOne
     @JoinColumn(name = "modification", referencedColumnName = "part_number")
@@ -41,14 +41,18 @@ public class OwenPrice {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         OwenPrice owenPrice = (OwenPrice) o;
-        return Objects.equals(izd_code, owenPrice.izd_code) && Objects.equals(product, owenPrice.product);
+        return Objects.equals(izd_code, owenPrice.izd_code) && Objects.equals(owenProduct, owenPrice.owenProduct);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(izd_code, product);
+        return Objects.hash(izd_code, owenProduct);
     }
 }

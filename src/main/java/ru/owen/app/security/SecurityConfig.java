@@ -2,10 +2,10 @@ package ru.owen.app.security;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -26,9 +26,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                        .requestMatchers(ProjectConstants.WHITE_LIST[1]).permitAll()
-                        .requestMatchers(ProjectConstants.ADMIN_LIST).hasRole("ADMIN")
-                        .anyRequest().hasRole("USER")
+                                .requestMatchers(ProjectConstants.WHITE_LIST[1]).permitAll()
+//                        .requestMatchers(ProjectConstants.ADMIN_LIST).hasRole("ADMIN")
+                                .anyRequest().hasRole("USER")
+//                                .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
@@ -46,17 +47,20 @@ public class SecurityConfig {
     public ObjectMapper getObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new JavaTimeModule());
         return objectMapper;
     }
 
-    @Bean
-    public JavaMailSenderImpl getJavaMailSender() {
-        return new JavaMailSenderImpl();
-    }
+//    @Bean
+//    public JavaMailSenderImpl getJavaMailSender() {
+//        return new JavaMailSenderImpl();
+//    }
 
     @Bean
     ModelMapper getModelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        return modelMapper;
     }
 
     @Bean

@@ -2,10 +2,9 @@ package ru.owen.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import ru.owen.app.model.KippriborMeyrtec.CommonPrice;
+import ru.owen.app.model.KippriborMeyrtec.KippriborMeyrtecPrice;
 import ru.owen.app.model.Owen.OwenPrice;
 
 import java.util.List;
@@ -37,8 +36,8 @@ public class Modification {
     private String fullTitle;
 
     @Column(name = "price")
-    //Цена
-    private Double price_;
+    //Цена без НДС
+    private Double price;
 
     @Column(name = "price_NDS")
     //Цена с ндс
@@ -88,7 +87,7 @@ public class Modification {
 
     @OneToMany(mappedBy = "modification")
     @JsonIgnore
-    private List<CommonPrice> kippriborMeyertecPrices;
+    private List<KippriborMeyrtecPrice> kippriborMeyertecPrices;
 
     @Override
     public boolean equals(Object o) {

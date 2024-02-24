@@ -1,7 +1,6 @@
 package ru.owen.app.service;
 
 import io.jsonwebtoken.Jwts;
-import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,15 +23,15 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
-    private final EmailSenderService emailSenderService;
+//    private final EmailSenderService emailSenderService;
 
     @Autowired
     public CustomerService(CustomerRepository customerRepository, AuthenticationManager authenticationManager,
-                           PasswordEncoder passwordEncoder, EmailSenderService emailSenderService) {
+                           PasswordEncoder passwordEncoder/*, EmailSenderService emailSenderService*/) {
         this.customerRepository = customerRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
-        this.emailSenderService = emailSenderService;
+//        this.emailSenderService = emailSenderService;
     }
 
     public ResponseEntity<?> authenticate(AuthenticationRequest authenticationRequest) {
@@ -61,7 +60,7 @@ public class CustomerService {
     }
 
     public void verify(String confirm) {
-        if (ProjectConstants.verifiers.containsKey(confirm)) {
+//        if (ProjectConstants.verifiers.containsKey(confirm)) {
             CustomerDTO customerDTO = ProjectConstants.verifiers.get(confirm);
             customerRepository.save(Customer.builder()
                     .email(customerDTO.getEmail())
@@ -69,13 +68,20 @@ public class CustomerService {
                     .registrationDate(new Date())
                     .role(ProjectConstants.USER_ROLE)
                     .build());
-            ProjectConstants.verifiers.remove(confirm);
-        }
+//            ProjectConstants.verifiers.remove(confirm);
+//        }
     }
 
     public void register(CustomerDTO customerDTO) {
-        String hash = String.valueOf(customerDTO.getEmail().hashCode());
-        ProjectConstants.verifiers.put(hash, customerDTO);
-        emailSenderService.sendEmail(customerDTO.getEmail(), hash);
+//        String hash = String.valueOf(customerDTO.getEmail().hashCode());
+//        ProjectConstants.verifiers.put(hash, customerDTO);
+//        emailSenderService.sendEmail(customerDTO.getEmail(), hash);
+
+        customerRepository.save(Customer.builder()
+                .email(customerDTO.getEmail())
+                .password(passwordEncoder.encode(customerDTO.getPassword()))
+                .registrationDate(new Date())
+                .role(ProjectConstants.USER_ROLE)
+                .build());
     }
 }

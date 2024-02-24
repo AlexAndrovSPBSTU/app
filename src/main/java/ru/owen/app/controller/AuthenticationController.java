@@ -18,14 +18,15 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody CustomerDTO customerDTO) {
         customerService.register(customerDTO);
-        return ResponseEntity.ok("Confirm your email!");
+//        return ResponseEntity.ok("Confirm your email!");
+        return ResponseEntity.ok("Customer has been registered!");
     }
 
-    @GetMapping("/verify")
-    public ResponseEntity<?> verify(@RequestParam String confirm) {
-        customerService.verify(confirm);
-        return ResponseEntity.ok("Customer has been registered");
-    }
+//    @GetMapping("/verify")
+//    public ResponseEntity<?> verify(@RequestParam String confirm) {
+//        customerService.verify(confirm);
+//        return ResponseEntity.ok("Customer has been registered");
+//    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {

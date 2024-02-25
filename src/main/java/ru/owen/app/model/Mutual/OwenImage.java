@@ -1,28 +1,30 @@
-package ru.owen.app.model.Owen;
+package ru.owen.app.model.Mutual;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ru.owen.app.model.Owen.OwenProduct;
 
-import java.util.List;
 import java.util.Objects;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "doc")
-public class Doc {
+@Table(name = "owenimage")
+@Setter
+@Getter
+public class OwenImage {
     @Id
-    @Column(name = "doc_id")
+    @Column(name = "image_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private int id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "src")
+    private String src;
+
+    @Column(name = "alt")
+    private String alt;
 
     @ManyToOne
     @JoinColumns({
@@ -32,17 +34,6 @@ public class Doc {
     @JsonBackReference
     private OwenProduct owenProduct;
 
-    @OneToMany(mappedBy = "doc")
-    private List<DocItem> items;
-
-    @JsonSetter
-    public void setItems(List<DocItem> items) {
-        this.items = items;
-        if (this.items != null) {
-            this.items.forEach(i -> i.setDoc(this));
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -51,13 +42,12 @@ public class Doc {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Doc doc = (Doc) o;
-        return Objects.equals(name, doc.name) && Objects.equals(owenProduct, doc.owenProduct);
+        OwenImage owenImage = (OwenImage) o;
+        return Objects.equals(src, owenImage.src) && Objects.equals(alt, owenImage.alt) && Objects.equals(owenProduct, owenImage.owenProduct);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, owenProduct);
+        return Objects.hash(src, alt, owenProduct);
     }
 }
-

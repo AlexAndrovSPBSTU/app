@@ -30,7 +30,7 @@ public class KippriborMeyrtecCategory {
     private String image;
 
     @OneToMany(mappedBy = "category")
-    private List<CommonPrice> prices;
+    private List<KippriborMeyrtecPrice> prices;
 
     public KippriborMeyrtecCategory(Integer id) {
         this.id = String.valueOf(id);

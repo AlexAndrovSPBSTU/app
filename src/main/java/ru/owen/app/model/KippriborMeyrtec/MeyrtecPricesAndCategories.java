@@ -6,12 +6,13 @@ import lombok.Setter;
 import java.util.List;
 
 @Setter
+@Getter
 public class MeyrtecPricesAndCategories {
-    @Getter
+
     private List<KippriborMeyrtecCategory> categories;
     private List<MeyertecPrice> products;
 
-    public List<? extends CommonPrice> getProducts() {
+    public List<? extends KippriborMeyrtecPrice> getProducts() {
         return products;
     }
 }

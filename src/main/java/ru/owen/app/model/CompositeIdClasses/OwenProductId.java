@@ -11,7 +11,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductId implements Serializable {
+public class OwenProductId implements Serializable {
 
     private String id;
 
@@ -21,8 +21,8 @@ public class ProductId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductId productId = (ProductId) o;
-        return Objects.equals(id, productId.id) && Objects.equals(owenCategory, productId.owenCategory);
+        OwenProductId owenProductId = (OwenProductId) o;
+        return Objects.equals(id, owenProductId.id) && Objects.equals(owenCategory, owenProductId.owenCategory);
     }
 
     @Override

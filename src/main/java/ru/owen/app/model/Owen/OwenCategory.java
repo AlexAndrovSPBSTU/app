@@ -28,16 +28,16 @@ public class OwenCategory {
     @Setter
     private String link;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_id", referencedColumnName = "category_id")
-    @JsonBackReference
     @Setter
     private OwenCategory parent;
 
     @OneToMany(mappedBy = "owenCategory")
-    private List<Product> products;
+    @JsonProperty(value = "products")
+    private List<OwenProduct> owenProducts;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent")
     private List<OwenCategory> items;
 
 
@@ -53,19 +53,23 @@ public class OwenCategory {
 
 
     @JsonSetter
-    public void setProducts(List<Product> products) {
-        this.products = products;
-        if (this.products != null) {
-            for (Product product : this.products) {
-                product.setOwenCategory(this);
+    public void setOwenProducts(List<OwenProduct> owenProducts) {
+        this.owenProducts = owenProducts;
+        if (this.owenProducts != null) {
+            for (OwenProduct owenProduct : this.owenProducts) {
+                owenProduct.setOwenCategory(this);
             }
         }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         OwenCategory owenCategory = (OwenCategory) o;
         return Objects.equals(id, owenCategory.id);
     }

@@ -1,11 +1,13 @@
 package ru.owen.app.model.CompositeIdClasses;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
-import ru.owen.app.model.KippriborMeyrtec.CommonPrice;
+import ru.owen.app.model.KippriborMeyrtec.KippriborMeyrtecPrice;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,9 +18,9 @@ public class ArrivalId implements Serializable {
     private Integer quantity;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    private Date date;
+    private LocalDate date;
 
-    private CommonPrice price;
+    private KippriborMeyrtecPrice price;
 
     @Override
     public boolean equals(Object o) {

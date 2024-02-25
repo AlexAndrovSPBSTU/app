@@ -4,62 +4,52 @@ import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.owen.app.model.CompositeIdClasses.ProductId;
-import ru.owen.app.model.Image;
+import ru.owen.app.model.CompositeIdClasses.OwenProductId;
+import ru.owen.app.model.Mutual.OwenImage;
 
 import java.util.List;
 import java.util.Objects;
 
 @Getter
+@Setter
 @Entity
-@Table(name = "product")
-@IdClass(ProductId.class)
-public class Product {
+@Table(name = "owenproduct")
+@IdClass(OwenProductId.class)
+public class OwenProduct {
     @Id
     @Column(name = "product_id")
-    @Setter
     private String id;
 
     @Column(name = "name")
-    @Setter
     private String name;
 
-    @Setter
     private String link;
 
-    @Setter
     private String sku;
 
-    @Setter
     private String image;
 
-    @Setter
     private String thumb;
 
-    @Setter
     @JsonProperty("desc")
     private String description;
 
-    @Setter
     private String specs;
 
+    @Id
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
-    @Id
     @JsonBackReference
-    @Setter
     private OwenCategory owenCategory;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonManagedReference("product-images")
-    private List<Image> images;
+    @OneToMany(mappedBy = "owenProduct")
+    @JsonProperty(value = "images")
+    private List<OwenImage> owenImages;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "owenProduct", cascade = CascadeType.ALL)
     private List<OwenPrice> owenPrices;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    @JsonManagedReference("product-docs")
+    @OneToMany(mappedBy = "owenProduct")
     private List<Doc> docs;
 
 
@@ -67,7 +57,7 @@ public class Product {
     public void setDocs(List<Doc> docs) {
         this.docs = docs;
         if (this.docs != null) {
-            this.docs.forEach(doc -> doc.setProduct(this));
+            this.docs.forEach(doc -> doc.setOwenProduct(this));
         }
     }
 
@@ -75,24 +65,28 @@ public class Product {
     public void setPrices(List<OwenPrice> owenPrices) {
         this.owenPrices = owenPrices;
         if (this.owenPrices != null) {
-            this.owenPrices.forEach(price -> price.setProduct(this));
+            this.owenPrices.forEach(price -> price.setOwenProduct(this));
         }
     }
 
     @JsonSetter
-    public void setImages(List<Image> images) {
-        this.images = images;
-        if (this.images != null) {
-            this.images.forEach(image -> image.setProduct(this));
+    public void setOwenImages(List<OwenImage> owenImages) {
+        this.owenImages = owenImages;
+        if (this.owenImages != null) {
+            this.owenImages.forEach(image -> image.setOwenProduct(this));
         }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return Objects.equals(id, product.id) && Objects.equals(owenCategory, product.owenCategory);
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        OwenProduct owenProduct = (OwenProduct) o;
+        return Objects.equals(id, owenProduct.id) && Objects.equals(owenCategory, owenProduct.owenCategory);
     }
 
     @Override

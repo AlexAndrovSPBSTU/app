@@ -1,12 +1,9 @@
 package ru.owen.app.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.owen.app.dto.OwenCategoryDTO;
 import ru.owen.app.dto.ProductDTO;
-import ru.owen.app.model.CategoriesResponse;
+import ru.owen.app.model.Mutual.CategoriesResponse;
 import ru.owen.app.service.CategoryService;
 
 import java.util.List;
@@ -21,7 +18,7 @@ public class CategoriesController {
     }
 
     @GetMapping
-    public CategoriesResponse getMainCategories() {
+    public CategoriesResponse getCategories() {
         return categoryService.getMainCategories();
     }
 
@@ -31,7 +28,10 @@ public class CategoriesController {
     }
 
     @GetMapping("/{categoryId}/products")
-    public List<?> getProducts(@PathVariable("categoryId") String categoryId) {
+    public List<?> getProducts(@PathVariable("categoryId") String categoryId, @RequestParam(required = false) String query) {
+        if (query != null) {
+            return categoryService.getProductsByCategory(categoryId, query);
+        }
         return categoryService.getProductsByCategory(categoryId);
     }
 

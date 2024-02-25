@@ -2,8 +2,8 @@ package ru.owen.app.model.Cart;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.owen.app.model.Customer;
-import ru.owen.app.model.Modification;
+import ru.owen.app.model.Mutual.Customer;
+import ru.owen.app.model.Mutual.Modification;
 
 
 @Getter

@@ -1,4 +1,4 @@
-package ru.owen.app.model;
+package ru.owen.app.model.Mutual;
 
 import lombok.*;
 import ru.owen.app.model.KippriborMeyrtec.KippriborMeyrtecPrice;

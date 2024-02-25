@@ -4,7 +4,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;  // Use HSSFWorkbook for .xls
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
 import ru.owen.app.constants.ProjectConstants;
-import ru.owen.app.model.Modification;
+import ru.owen.app.model.Mutual.Modification;
 
 import java.io.IOException;
 import java.io.InputStream;

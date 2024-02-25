@@ -9,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.owen.app.model.Customer;
+import ru.owen.app.model.Mutual.Customer;
 import ru.owen.app.repository.CustomerRepository;
 
 import java.util.Collections;

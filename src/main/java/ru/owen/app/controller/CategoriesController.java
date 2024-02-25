@@ -3,7 +3,7 @@ package ru.owen.app.controller;
 import org.springframework.web.bind.annotation.*;
 import ru.owen.app.dto.OwenCategoryDTO;
 import ru.owen.app.dto.ProductDTO;
-import ru.owen.app.model.CategoriesResponse;
+import ru.owen.app.model.Mutual.CategoriesResponse;
 import ru.owen.app.service.CategoryService;
 
 import java.util.List;

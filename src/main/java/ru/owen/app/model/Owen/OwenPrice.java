@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import ru.owen.app.model.CompositeIdClasses.PriceId;
-import ru.owen.app.model.Modification;
+import ru.owen.app.model.Mutual.Modification;
 
 import java.util.Objects;
 

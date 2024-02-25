@@ -2,7 +2,7 @@ package ru.owen.app.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.owen.app.model.OwenImage;
+import ru.owen.app.model.Mutual.OwenImage;
 import ru.owen.app.model.Owen.Doc;
 import ru.owen.app.model.Owen.OwenPrice;
 

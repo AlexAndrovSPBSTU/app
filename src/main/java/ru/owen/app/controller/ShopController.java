@@ -7,8 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.owen.app.model.Delivery;
-import ru.owen.app.model.InvoiceRequest;
+import ru.owen.app.model.Mutual.Delivery;
+import ru.owen.app.model.Mutual.InvoiceRequest;
 import ru.owen.app.model.Cart.CartResponse;
 import ru.owen.app.service.ShopService;
 

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import ru.owen.app.model.CompositeIdClasses.OwenProductId;
-import ru.owen.app.model.OwenImage;
+import ru.owen.app.model.Mutual.OwenImage;
 
 import java.util.List;
 import java.util.Objects;

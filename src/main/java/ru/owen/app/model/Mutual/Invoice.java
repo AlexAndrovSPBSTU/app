@@ -1,4 +1,4 @@
-package ru.owen.app.model;
+package ru.owen.app.model.Mutual;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

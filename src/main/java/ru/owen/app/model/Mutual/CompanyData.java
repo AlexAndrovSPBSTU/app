@@ -1,4 +1,4 @@
-package ru.owen.app.model;
+package ru.owen.app.model.Mutual;
 
 import lombok.Getter;
 import lombok.Setter;

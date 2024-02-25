@@ -2,7 +2,7 @@ package ru.owen.app.security;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.*;
-import ru.owen.app.model.Customer;
+import ru.owen.app.model.Mutual.Customer;
 
 @Getter
 @Setter

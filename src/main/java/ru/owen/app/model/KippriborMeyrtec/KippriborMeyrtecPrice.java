@@ -3,7 +3,7 @@ package ru.owen.app.model.KippriborMeyrtec;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
-import ru.owen.app.model.Modification;
+import ru.owen.app.model.Mutual.Modification;
 
 import java.util.List;
 import java.util.Objects;

@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.owen.app.constants.ProjectConstants;
 import ru.owen.app.dto.CustomerDTO;
-import ru.owen.app.model.Customer;
+import ru.owen.app.model.Mutual.Customer;
 import ru.owen.app.repository.CustomerRepository;
 import ru.owen.app.security.AuthenticationRequest;
 import ru.owen.app.security.AuthenticationResponse;

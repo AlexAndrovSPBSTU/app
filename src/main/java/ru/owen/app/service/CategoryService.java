@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import ru.owen.app.constants.ProjectConstants;
 import ru.owen.app.dto.OwenCategoryDTO;
 import ru.owen.app.dto.ProductDTO;
-import ru.owen.app.model.CategoriesResponse;
+import ru.owen.app.model.Mutual.CategoriesResponse;
 import ru.owen.app.model.CompositeIdClasses.OwenProductId;
 import ru.owen.app.model.Owen.OwenCategory;
-import ru.owen.app.model.SearchResponse;
+import ru.owen.app.model.Mutual.SearchResponse;
 import ru.owen.app.repository.*;
 
 import java.util.List;

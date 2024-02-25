@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ru.owen.app.model.CompositeIdClasses.DocId;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,13 +15,10 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "doc")
+@IdClass(DocId.class)
 public class Doc {
-    @Id
-    @Column(name = "doc_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private int id;
 
+    @Id
     @Column(name = "name")
     private String name;
 
@@ -30,9 +28,10 @@ public class Doc {
             @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     })
     @JsonBackReference
+    @Id
     private OwenProduct owenProduct;
 
-    @OneToMany(mappedBy = "doc")
+    @OneToMany(mappedBy = "doc", cascade = CascadeType.ALL)
     private List<DocItem> items;
 
     @JsonSetter

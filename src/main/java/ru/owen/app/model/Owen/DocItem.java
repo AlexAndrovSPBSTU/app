@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ru.owen.app.model.CompositeIdClasses.DocItemId;
 
 import java.util.Objects;
 
@@ -12,22 +13,23 @@ import java.util.Objects;
 @Entity
 @Table(name = "doc_item")
 @Setter
+@IdClass(DocItemId.class)
 public class DocItem {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private int id;
 
-    @Column(name = "name")
+    @Id
+    @Column(name = "name_")
     private String name;
 
+    @Id
     @Column(name = "link")
     private String link;
 
     @ManyToOne
-    @JoinColumn(name = "doc_id", referencedColumnName = "doc_id")
+    @JoinColumns({@JoinColumn(name = "name", referencedColumnName = "name"),
+            @JoinColumn(name = "product_id", referencedColumnName = "product_id"),
+            @JoinColumn(name = "category_id", referencedColumnName = "category_id")})
     @JsonBackReference
+    @Id
     private Doc doc;
 
     @Override

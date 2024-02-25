@@ -49,7 +49,7 @@ public class OwenProduct {
     @OneToMany(mappedBy = "owenProduct", cascade = CascadeType.ALL)
     private List<OwenPrice> owenPrices;
 
-    @OneToMany(mappedBy = "owenProduct")
+    @OneToMany(mappedBy = "owenProduct", cascade = CascadeType.ALL)
     private List<Doc> docs;
 
 

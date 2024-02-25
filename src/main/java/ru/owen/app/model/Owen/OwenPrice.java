@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.owen.app.model.CompositeIdClasses.PriceId;
+import ru.owen.app.model.CompositeIdClasses.OwenPriceId;
 import ru.owen.app.model.Mutual.Modification;
 
 import java.util.Objects;
@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "owenprice")
-@IdClass(PriceId.class)
+@IdClass(OwenPriceId.class)
 @Getter
 @Setter
 public class OwenPrice {

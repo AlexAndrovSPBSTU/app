@@ -112,10 +112,10 @@ public class DbManagementService {
         reloadCollectionWithIdGeneratedByDefault(newOwenImages, imageRepository);
         logger.info("OwenImages have been saved");
 
-        reloadCollectionWithIdGeneratedByDefault(newDocs, docRepository);
+        reloadCollection(newDocs, docRepository);
         logger.info("OwenDocs have been saved");
 
-        reloadCollectionWithIdGeneratedByDefault(newDocItems, docItemRepository);
+        reloadCollection(newDocItems, docItemRepository);
         logger.info("OwenDocItems have been saved");
     }
 

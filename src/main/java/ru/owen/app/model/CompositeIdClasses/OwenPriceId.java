@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-public class PriceId implements Serializable {
+public class OwenPriceId implements Serializable {
     private String izd_code;
     private OwenProduct owenProduct;
 
@@ -17,8 +17,8 @@ public class PriceId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PriceId priceId = (PriceId) o;
-        return Objects.equals(izd_code, priceId.izd_code) && Objects.equals(owenProduct, priceId.owenProduct);
+        OwenPriceId owenPriceId = (OwenPriceId) o;
+        return Objects.equals(izd_code, owenPriceId.izd_code) && Objects.equals(owenProduct, owenPriceId.owenProduct);
     }
 
     @Override
